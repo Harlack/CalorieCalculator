@@ -1,21 +1,23 @@
 package org.example.entity;
 
 import jakarta.persistence.*;
-import jdk.jfr.Name;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "products")
-public class Product {
+@Entity
+@Table(name = "roles")
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    @Column(nullable=false, unique=true)
+    private Long id;
     private String name;
-    private Integer calories;
+    @ManyToMany(mappedBy = "roles")
+    private List<User> users;
+
 }
