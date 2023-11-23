@@ -10,19 +10,12 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 @AllArgsConstructor
-public class CalorieCalculatorApplication implements CommandLineRunner{
+public class CalorieCalculatorApplication{
 
     private UserRepository userRepository;
     public static void main(String[] args) {
     SpringApplication.run(CalorieCalculatorApplication.class,args);
     }
 
-    @Override
-    public void run(String... args) throws Exception {
-        userRepository.save(User.builder()
-                .id(1)
-                .username("aaa")
-                .password("assd")
-                .build());
-    }
+
 }

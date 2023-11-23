@@ -1,15 +1,13 @@
 package org.example.services;
 
 import org.example.entity.User;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.example.entity.UserDto;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface UserService {
-    List<User> getAllUsers();
-    Optional<User> getUserById(int id);
-    User addUser(User user);
+    List<UserDto> getAllUsers();
+    User getUserByEmail(String email);
+    User addUser(UserDto userDto);
     User updateUser(int id, User updateUser);
 }

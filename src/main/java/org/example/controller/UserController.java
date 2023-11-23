@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import lombok.AllArgsConstructor;
+import org.example.entity.UserDto;
 import org.example.services.UserService;
 import org.example.entity.User;
 import org.springframework.web.bind.annotation.*;
@@ -15,17 +16,17 @@ public class UserController {
     private UserService userService;
 
     @GetMapping()
-    public List<User> getAllUsers(){
+    public List<UserDto> getAllUsers(){
         return userService.getAllUsers();
 
     }
-    @GetMapping("/{id}")
-    public Optional<User> getUserById(@PathVariable int id){
-        return userService.getUserById(id);
+    @GetMapping("/{email}")
+    public User getUserByEmail(String email){
+        return userService.getUserByEmail(email);
     }
 
     @PostMapping
-    public User addUser(@RequestBody User user){
+    public User addUser(@RequestBody UserDto user){
         return userService.addUser(user);
     }
 
