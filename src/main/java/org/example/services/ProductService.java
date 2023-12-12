@@ -1,17 +1,18 @@
 package org.example.services;
 
 import org.example.entity.Product;
-import org.example.entity.User;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.example.entity.ProductDto;
 
 import java.util.List;
+import java.util.Map;
+
 public interface ProductService {
-    List<Product> getAllProducts();
-    Product addProduct(Product product);
+    List<ProductDto> getAllProducts();
+    void addProduct(Product product);
     Product updateProduct(int id, Product updateProduct);
     Product getProductById(int id);
     Product deleteProductById(int id);
     Product getDetailsProductByName(String name);
+    Map<String, Integer> calculateNutrients(List<Product> products);
+    void deleteProductFromUserProductList(Product product);
 }

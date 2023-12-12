@@ -1,4 +1,4 @@
-package org.example;
+package org.example.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -28,11 +28,12 @@ public class SpringSecurity {
                         authorize.requestMatchers("/register/**").permitAll()
                                 .requestMatchers("/index").permitAll()
                                 .requestMatchers("/users").hasRole("ADMIN")
+                                .anyRequest().authenticated()
                 ).formLogin(
                         form -> form
                                 .loginPage("/login")
                                 .loginProcessingUrl("/login")
-                                .defaultSuccessUrl("/users")
+                                .defaultSuccessUrl("/products", true)
                                 .permitAll()
                 ).logout(
                         logout -> logout

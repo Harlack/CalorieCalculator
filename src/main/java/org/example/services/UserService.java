@@ -10,4 +10,7 @@ public interface UserService {
     User getUserByEmail(String email);
     User addUser(UserDto userDto);
     User updateUser(int id, User updateUser);
+    void saveUser(User user);
+    void validateUserDto(UserDto userDto);
+
 }

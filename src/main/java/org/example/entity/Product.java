@@ -14,8 +14,15 @@ import lombok.NoArgsConstructor;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     @Column(nullable=false, unique=true)
     private String name;
+    @Column(nullable=false)
     private Integer calories;
+    @Column(nullable=false)
+    private Integer totalFat;
+    private Integer cholesterol;
+    private Integer sodium;
+    private Integer totalCarbohydrates;
+    private Integer protein;
 }
