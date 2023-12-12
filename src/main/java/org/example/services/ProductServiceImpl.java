@@ -8,6 +8,11 @@ import java.util.Optional;
 
 public class ProductServiceImpl implements ProductService{
     ProductRepository productRepository;
+
+    public ProductServiceImpl(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
     @Override
     public List<Product> getAllProducts() {
         return productRepository.findAll();
