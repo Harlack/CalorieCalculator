@@ -52,7 +52,6 @@ public class ProductControllerTest {
         product.setName("cos");
         product.setCalories(134);
         product.setTotalFat(5);
-        product.setCholesterol(10);
         product.setSodium(15);
         product.setTotalCarbohydrates(20);
         product.setProtein(25);
@@ -67,7 +66,6 @@ public class ProductControllerTest {
         assertEquals("cos", savedProduct.getName());
         assertEquals(134, savedProduct.getCalories());
         assertEquals(5, savedProduct.getTotalFat());
-        assertEquals(10, savedProduct.getCholesterol());
         assertEquals(15, savedProduct.getSodium());
         assertEquals(20, savedProduct.getTotalCarbohydrates());
         assertEquals(25, savedProduct.getProtein());
