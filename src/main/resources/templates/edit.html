@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calorie Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/index}">Calorie Calculator</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/logout}">Logout</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/products}">Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/calculator}">Calculator</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/users}">Users</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <!-- Edit Product Form -->
+    <div class="row col-md-10">
+        <h2>Edit Product</h2>
+    </div>
+    <form th:action="@{'/product/edit/' + ${product.id}}" method="post">
+           <input type="hidden" th:field="*{id}">
+
+        <div class="mb-3">
+            <label for="name" class="form-label">Product Name</label>
+            <input type="text" class="form-control" id="name" name="name" th:value="${product.name}" required>
+        </div>
+        <div class="mb-3">
+            <label for="calories" class="form-label">Calories (kcal)</label>
+            <input type="number" class="form-control" id="calories" name="calories" th:value="${product.calories}" required>
+        </div>
+        <div class="mb-3">
+            <label for="totalFat" class="form-label">Total Fat (g)</label>
+            <input type="number" class="form-control" id="totalFat" name="totalFat" th:value="${product.totalFat}" required>
+        </div>
+        <div class="mb-3">
+            <label for="cholesterol" class="form-label">Cholesterol (g)</label>
+            <input type="number" class="form-control" id="cholesterol" name="cholesterol" th:value="${product.cholesterol}">
+        </div>
+        <div class="mb-3">
+            <label for="sodium" class="form-label">Sodium (g)</label>
+            <input type="number" class="form-control" id="sodium" name="sodium" th:value="${product.sodium}">
+        </div>
+        <div class="mb-3">
+            <label for="totalCarbohydrates" class="form-label">Total Carbohydrates (g)</label>
+            <input type="number" class="form-control" id="totalCarbohydrates" name="totalCarbohydrates" th:value="${product.totalCarbohydrates}">
+        </div>
+        <div class="mb-3">
+            <label for="protein" class="form-label">Protein (g)</label>
+            <input type="number" class="form-control" id="protein" name="protein" th:value="${product.protein}">
+        </div>
+        <button type="submit" class="btn btn-primary">Update Product</button>
+    </form>
+</div>
+</body>
+</html>

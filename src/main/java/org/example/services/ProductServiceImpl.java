@@ -1,101 +1,154 @@
 package org.example.services;
 
 import org.example.entity.Product;
+import org.example.entity.ProductDto;
 import org.example.repository.ProductRepository;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
+@Service
 public class ProductServiceImpl implements ProductService{
-    ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     public ProductServiceImpl(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
     @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductDto> getAllProducts() {
+        List<Product> products = productRepository.findAll();
+        List<ProductDto> productDtoList = new ArrayList<>();
+
+        for (Product product : products) {
+            ProductDto productDto = new ProductDto();
+            productDto.setId(product.getId());
+            productDto.setName(product.getName());
+            productDto.setCalories(product.getCalories());
+            productDto.setTotalFat(product.getTotalFat());
+            productDto.setTotalCarbohydrates(product.getTotalCarbohydrates());
+            productDto.setSodium(product.getSodium());
+            productDto.setProtein(product.getProtein());
+            productDto.setCholesterol(product.getCholesterol());
+
+            productDtoList.add(productDto);
+        }
+
+        return productDtoList;
     }
 
     @Override
-    public Product addProduct(Product product) {
+    public void addProduct(Product product) {
         try {
-            if(productRepository.findById(product.getId()).isPresent()){
-                throw new Exception("Product name is already exist");
-            }else {
-                return productRepository.save(product);
+            if (productRepository.findByName(product.getName()) != null) {
+                throw new RuntimeException("Product name already exists");
+            } else {
+                productRepository.save(product);
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
         }
     }
 
     @Override
-    public Product updateProduct(int id, Product updateProduct) {
+    public Product updateProduct(int id, Product updatedProduct) {
         try {
-            Optional<Product> product = productRepository.findById(id);
+            Optional<Product> optionalProduct = productRepository.findById(id);
 
-            if(product.isPresent()){
-                if(product.get().getName().equals(updateProduct.getName())){
-                    throw new Exception("Product name is already exist");
-                }else {
-                    product.get().setName(updateProduct.getName());
-                    product.get().setCalories(updateProduct.getCalories());
-                    return updateProduct;
+            if (optionalProduct.isPresent()) {
+                Product existingProduct = optionalProduct.get();
+                if (!existingProduct.getName().equals(updatedProduct.getName()) &&
+                        productRepository.findByName(updatedProduct.getName()) != null) {
+                    throw new RuntimeException("Product name already exists");
                 }
-            }else {
-                throw new Exception("Product not found");
+
+                existingProduct.setName(updatedProduct.getName());
+                existingProduct.setCalories(updatedProduct.getCalories());
+                existingProduct.setTotalFat(updatedProduct.getTotalFat());
+                existingProduct.setTotalCarbohydrates(updatedProduct.getTotalCarbohydrates());
+                existingProduct.setSodium(updatedProduct.getSodium());
+                existingProduct.setProtein(updatedProduct.getProtein());
+                existingProduct.setCholesterol(updatedProduct.getCholesterol());
+
+                return productRepository.save(existingProduct);
+            } else {
+                throw new RuntimeException("Product not found");
             }
-        }catch (Exception e){
-            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
         }
-        return null;
     }
 
     @Override
     public Product getProductById(int id) {
         try {
-            Optional<Product> product = productRepository.findById(id);
-            if(product.isPresent()){
-                return product.get();
-            }else {
-                throw new Exception("Product not found");
-            }
-        }catch (Exception e){
-            System.out.println(e.getMessage());
+            return productRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Product not found"));
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
         }
-        return null;
     }
 
     @Override
     public Product deleteProductById(int id) {
         try {
-            Optional<Product> product = productRepository.findById(id);
-            if(product.isPresent()){
+            Optional<Product> optionalProduct = productRepository.findById(id);
+            if (optionalProduct.isPresent()) {
                 productRepository.deleteById(id);
-                return product.get();
-            }else {
-                throw new Exception("Product not found");
+                return optionalProduct.get();
+            } else {
+                throw new RuntimeException("Product not found");
             }
-        }catch (Exception e){
-            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
         }
-        return null;
     }
 
     @Override
     public Product getDetailsProductByName(String name) {
         try {
             Product product = productRepository.findByName(name);
-            if(product != null){
+            if (product != null) {
                 return product;
-            }else {
-                throw new Exception("Product not found");
+            } else {
+                throw new RuntimeException("Product not found");
             }
-        }catch (Exception e){
-            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
         }
-        return null;
     }
+
+    @Override
+    public Map<String, Integer> calculateNutrients(List<Product> products) {
+        Map<String, Integer> sumValues = new HashMap<>();
+        Integer sumCalories = 0, sumTotalFat = 0, sumCholesterol = 0, sumSodium = 0, sumTotalCarbs = 0, sumProtein = 0;
+
+        for (Product product : products) {
+            sumCalories += product.getCalories();
+            sumTotalFat += product.getTotalFat();
+            sumCholesterol += product.getCholesterol();
+            sumSodium += product.getSodium();
+            sumTotalCarbs += product.getTotalCarbohydrates();
+            sumProtein += product.getProtein();
+        }
+
+        sumValues.put("sumCalories", sumCalories);
+        sumValues.put("sumTotalFat", sumTotalFat);
+        sumValues.put("sumCholesterol", sumCholesterol);
+        sumValues.put("sumSodium", sumSodium);
+        sumValues.put("sumTotalCarbs", sumTotalCarbs);
+        sumValues.put("sumProtein", sumProtein);
+
+        return sumValues;
+    }
+
+    @Override
+    public void deleteProductFromUserProductList(Product product) {
+        try {
+            productRepository.deleteUserProductListByProduct(product);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
 }
