@@ -78,8 +78,10 @@ public class UserServiceImpl implements UserService {
                 user.get().setId(updateUser.getId());
                 user.get().setUsername(updateUser.getUsername());
                 user.get().setPassword(updateUser.getPassword());
+                return userRepository.save(user.get());
+            } else {
+                throw new RuntimeException("User not found");
             }
-            return null;
         } catch (Exception e) {
             throw new RuntimeException("Error updating user", e);
         }
@@ -91,6 +93,15 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
         } catch (Exception e) {
             throw new RuntimeException("Error saving user", e);
+        }
+    }
+
+    @Override
+    public void deleteUser(int id) {
+        try {
+            userRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Error deleting user", e);
         }
     }
 
@@ -113,4 +124,5 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Invalid email format");
         }
     }
+
 }

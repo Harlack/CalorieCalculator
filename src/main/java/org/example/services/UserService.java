@@ -12,5 +12,5 @@ public interface UserService {
     User updateUser(int id, User updateUser);
     void saveUser(User user);
     void validateUserDto(UserDto userDto);
-
+    void deleteUser(int id);
 }

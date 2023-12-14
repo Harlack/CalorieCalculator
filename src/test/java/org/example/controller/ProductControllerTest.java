@@ -32,13 +32,12 @@ public class ProductControllerTest {
 
     @Test
     void getProductDetails_ReturnsCorrectDetails() {
-        // Arrange
+
         Product product = new Product();
         product.setName("Test Product");
         product.setCalories(100);
         product.setTotalFat(5);
 
-        // Act & Assert
         assertEquals("Test Product", product.getName());
         assertEquals(100, product.getCalories());
         assertEquals(5, product.getTotalFat());
@@ -48,7 +47,7 @@ public class ProductControllerTest {
     @Test
     void addProduct() {
         Product product = new Product();
-        product.setId(1L);
+        product.setId((long) productService.getAllProducts().size()+1);
         product.setName("cos");
         product.setCalories(134);
         product.setTotalFat(5);
@@ -57,11 +56,9 @@ public class ProductControllerTest {
         product.setProtein(25);
         product.setCholesterol(30);
 
-        // Act
         productService.addProduct(product);
         Product savedProduct = productRepository.findById(Math.toIntExact(product.getId())).orElse(null);
 
-        // Assert
         assertThat(savedProduct).isNotNull();
         assertEquals("cos", savedProduct.getName());
         assertEquals(134, savedProduct.getCalories());
